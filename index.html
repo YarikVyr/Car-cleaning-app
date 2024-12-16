@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ Мойки Машин</title>
+    <!-- Подключение Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQXH6nwn1yllQI5mdfsggIGYgBCWlOn2rPgQq9B" crossorigin="anonymous">
+    <style>
+        /* Базовая стилизация */
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        form {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .car-wash-info {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #eaeaea;
+            border-radius: 5px;
+        }
+        
+        .car-wash-info p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Заказать Мойку Машины</h1>
+    
+    <!-- Форма для ввода данных -->
+    <form id="orderForm">
+        <div class="mb-3">
+            <label for="name">Ваше имя:</label>
+            <input type="text" id="name" placeholder="Введите ваше имя" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone">Номер телефона:</label>
+            <input type="tel" id="phone" placeholder="Введите номер телефона" required>
+        </div>
+        <div class="mb-3">
+            <label for="carType">Тип автомобиля:</label>
+            <select id="carType" required>
+                <option value="">Выберите тип автомобиля</option>
+                <option value="sedan">Седан</option>
+                <option value="suv">Кроссовер/внедорожник</option>
+                <option value="minivan">Минивэн</option>
+                <option value="coupe">Купе</option>
+            </select>
+        </div>
+        <button type="submit">Отправить заказ</button>
+    </form>
+    
+    <!-- Блок для вывода информации о заказе -->
+    <div id="carWashInfo" class="car-wash-info"></div>
+</div>
+
+<!-- Подключение jQuery и Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqzblklFWB6AY3a1+QDUTJ6Sbpr1aITRJcx2+vT5Rv6/wYDFbIYEO58v/fObzO"
+        crossorigin="anonymous"></script>
+
+<!-- Скрипт для отправки запроса и обработки ответа -->
+<script>
+    $(document).ready(function () {
+        // Обработчик события отправки формы
+        $('#orderForm').on('submit', function (event) {
+            event.preventDefault();
+            
+            const name = $('#name').val();
+            const phone = $('#phone').val();
+            const carType = $('#carType').val();
+
+            $.getJSON('/api/order', { name: name, phone: phone, carType: carType }, function (data) {
+                if (data.success) {
+                    $('#carWashInfo').html(`
+                        <p><strong>Имя клиента
